@@ -1,38 +1,577 @@
-.App {
-  text-align: center;
+@font-face {
+  font-family: 'SUIT-Medium';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Medium.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+* {
+  font-family: 'SUIT-Medium', 'Pretendard-Regular', serif;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+*::-webkit-scrollbar {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #00000044;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.no-drag {
+  -webkit-user-select: none; 
+  -moz-user-select: none; 
+  -ms-user-select: none; 
+  user-select: none;
+}
+
+#root, .app {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.app {
+  background-color: rgb(201, 201, 201);
+}
+
+.main {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 10px 100px 20px;
+  padding-top: 50px;
+}
+
+.popup-window {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  padding: 10px 40px 30px;
+  background-color: rgba(225, 229, 235, 0.9);
+  border-radius: 10px;
+  transition: all 0.5 ease;
+  z-index: 10;
+}
+
+.popup-window input[type='text'] {
+  margin: 3px 5px;
+  padding: 4px;
+  outline: none;
+  border-radius: 7px;
+  border: none;
+}
+
+.popup-window input[type='checkbox'] {
+  width: 14px;
+  height: 14px;
+  margin-left: 0;
+}
+
+.popup-window input[type='text']:read-only {
+  background-color: #b8b8b8;
+  color: #797979;
+}
+
+.create-room-btn {
+  background-color: rgb(160, 183, 229);
+  border: none;
+  padding: 5px 10px;
+  border-radius: 10px;
+  float: right;
+}
+
+.popup-title {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 30px;
+  font-size: 1.2em;
+}
+
+.popup-close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  box-sizing: border-box;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+input[type="range"] {
+  height: 10px;
+  border-radius: 5px;  
+  background: #797979;
+  outline: none;
+  opacity: 0.7;
+  margin: 5px 15px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.ranking {
+  text-align: center;
+  height: 300px;
+  overflow-y: scroll;
+  padding-left: 7px;
+}
+
+.ranking-user {
+  padding: 5px;
+  margin: 10px;
+  background-color: white;
+  border-radius: 15px;
+}
+
+.ranking-score {
+  color: #778dd1;
+}
+
+.main-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 0 30px;
+}
+
+.main-header-item {
+  background-color: #9bf;
+  margin: 20px 8px 0 0;
+  padding: 5px 20px;
+  transition: all 0.5s ease;
+  border-radius: 10px 10px 0px 0px;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.main-header-item:nth-child(2n) {
+  background-color: rgb(124, 154, 214);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.main-header-item:hover {
+  padding-bottom: 15px;
+  margin-top: 10px;
+}
+
+.main-body {
+  display: flex;
+  flex-direction: row;
+  box-sizing: content-box;
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.user-list {
+  background-color: #5265a3;
+  display: inline-block;
+  height: 100%;
+  flex-shrink: 0;
+  width: 180px;
+  flex-basis: 180px;
+}
+
+.user-list > .user-list-title {
+  text-align: center;
+  padding: 10px;
+  color: white;
+}
+
+.user-list > .list {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 10px 20px;
+}
+
+.user-list > .list > .user-name {
+  text-align: left;
+  background-color: rgb(245, 245, 245);
+  padding: 5px;
+  border-radius: 5px;
+  margin-bottom: 4px;
+  font-size: 0.8em;
+}
+
+.room-list-cont {
+  padding: 20px;
+  text-align: end;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.room-list-cont > .headbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.room-list-cont > .headbar > label {
+  margin: 0 10px 10px;
+}
+
+.room-list-cont > .headbar > label > input[type='text'] {
+  outline: none;
+  border: none;
+  background-color: rgb(233, 233, 233);
+  padding: 2px 5px;
+  margin-left: 5px;
+  border-radius: 5px;
+}
+
+.room-list {
+  text-align: start;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 80px;
+  gap: 10px;
+  padding-right: 10px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.room-element {
+  padding: 5px;
+  background-color: rgb(241, 241, 241);
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.room-element.start {
+  background-color: rgb(194, 194, 194);
+}
+
+.room-body {
+  flex-grow: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.room-body > .room-chat {
+  height: 200px;
+  flex-basis: 200px;
+  flex-shrink: 0;
+  background-color: #f3f3f3;
+  border: 2px solid #e7e7e7;
+  border-radius: 20px;
+  padding: 10px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.room-chat > .room-chat-list {
+  flex-grow: 1;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.room-chat-input {
+  margin-top: 5px;
+  display: flex;
+}
+
+.room-chat-input > input {
+  flex-grow: 1;
+  border-radius: 10px 0 0 10px;
+  padding: 4px 10px;
+  outline: none;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 2px solid #e7e7e7;
+}
+
+.room-chat-input > button {
+  padding: 4px 20px;
+  border-radius: 0 10px 10px 0;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1em;
+  border: 2px solid #e7e7e7;
+  border-left: none;
+}
+
+.room-body.start {
+  background-color: rgb(191, 213, 255);
+}
+
+.room-body > .room-title {
+  text-align: left;
+  margin-bottom: 10px;
+  padding: 3px 10px;
+  border-radius: 10px;
+  border: 2px solid lightgray;
+  background-color: white;
+  color: black;
+}
+
+.room-body > .room-title > .room-user-cnt {
+  float: right;
+}
+
+.room-body > .room-users {
+  flex-grow: 1;
+  flex-basis: 100px;
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.room-body > .room-gamestack {
+  flex-grow: 4;
+  flex-basis: 100px;
+  flex-shrink: 0;
+  border-radius: 20px;
+  padding: 10px 20px;
+  color: white;
+  background-color: #354472;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.time-label {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  background-color: white;
+  color: gray;
+  padding: 5px;
+  width: 200px;
+  text-align: center;
+  border-radius: 25px;
+  transform: translateX(-50%);
+}
+
+.time-label > .time {
+  display: inline-block;
+  color: cornflowerblue
+}
+
+.time::after {
+  content: '초';
+  color: gray;
+}
+
+.room-word {
+  color: white;
+  display: inline;
+}
+
+.room-word::after {
+  content: ' ';
+}
+
+.room-word.one-shot {
+  color: rgb(255, 130, 130);
+}
+
+.room-word.lead {
+  color: rgb(255, 214, 139);
+}
+
+.room-word.route {
+  color: rgb(166, 255, 139);
+}
+
+.room-users.start {
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: 1fr;
+}
+
+.room-users > .room-user {
+  background-color: #f3f3f3;
+  border: 2px solid #e7e7e7;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.room-user.current-turn {
+  background-color: rgb(255, 235, 124);
+}
+
+.room-user.spect {
+  background-color: rgb(156, 156, 156);
+}
+
+.room-user-name {
+  display: inline;
+}
+
+.room-user.spect > .room-user-name {
+  color: white;
+}
+
+.room-user-flag {
+  float: right;
+}
+
+.room-users.start .room-user-flag {
+  display: none;
+  float: none;
+}
+
+.room-users.start .room-user-name {
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+}
+
+.room-user-flag.spect {
+  color: rgb(226, 226, 226);
+}
+
+.room-user-flag.owner {
+  color: rgb(255, 150, 13);
+}
+
+.room-user-flag.ready {
+  color: rgb(92, 128, 206);
+}
+
+.padlock {
+  float: right;
+  margin: 3px 10px;
+}
+
+.room-element > .room-name {
+  display: inline-block;
+}
+
+.room-element > .room-id {
+  display: inline-block;
+  margin: 0 10px;
+  font-size: 1.2em;
+}
+
+.room-element > .room-usercnt {
+  float: right;
+  margin-right: 4px;
+}
+
+.header {
+  position: fixed;
+  padding: 0 12px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: rgb(49, 49, 49);
+  border-bottom: 1px solid gray;
+}
+
+.header-left, .header-right {
+  display: flex;
+  flex-direction: row;
+}
+
+.header-front, .header-button {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.header-front {
+  margin: 5px 20px;
+  font-weight: bold;
+  color: rgb(94, 143, 233);
+  font-size: 1.4em;
+}
+
+.header-button {
+  background-color: transparent;
+  padding: 6px 30px;
+  margin: auto 0;
+  border: none;
+  font-size: 0.9em;
+  color: white;
+  transition: all 0.5s ease;
+}
+
+.header-button:hover {
+  color: #ffa;
+}
+
+.login-window, .register-window {
+  background-color: white;
+  padding: 20px 80px 60px 80px;
+  border-radius: 20px;
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.login-window input, .register-window input {
+  width: 200px;
+  outline: none;
+  border: none;
+  background-color: #eaeeff;
+  padding: 6px 20px;
+  margin-bottom: 10px;
+}
+
+.login-btn, .register-btn {
+  cursor: pointer;
+  width: 100%;
+  padding: 10px;
+  font-size: 1.1em;
+  margin-top: 30px;
+  border: none;
+  background-color: #dfe5ff;
+}
+
+.about-to-register, .about-to-login {
+  color: rgb(148, 148, 148);
+  cursor: pointer;
+  text-decoration: underline;
+  margin: 5px 0 0;
+  display: inline-block;
+}
+
+.login-title, .register-title {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.not-found {
+  background-color: lightgray;
+  text-align: center;
+  height: 100%;
+  font-size: 2.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
